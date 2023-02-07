@@ -68,7 +68,7 @@ router.post('/login',async (req,res) =>{
     })
     if(!user){
         return res.status(400).json({
-            error: 'El corroe no existe mi chavo :('
+            error: 'El correo no existe mi chavo :('
         })
     }
     const validPassword = await bcrypt.compare(req.body.password, user.password)
@@ -87,6 +87,44 @@ router.post('/login',async (req,res) =>{
         error: null,
         data: {token}
     })
+})
+
+router.get('/getallusers', async (req,res)=>{
+    try{
+    const users = await User.find({})
+    res.json({
+        message:"Usuario",
+        data:users
+    })        
+    }
+    catch(error){
+        res.json({
+            message:"Error",
+            error
+        })
+    }
+})
+
+router.post('/eraseUser', async (req, res) =>{
+    const id = req.body.id
+    try {
+        const erasedUser = await User.findByIdAndDelete({_id: id})
+        if (erasedUser) {
+            res.json({
+                message:"Usuario borrado",
+                data: erasedUser
+            })
+        }else{
+            res.json({
+                message:"El usuario no existe :(",
+                data: null
+            })
+        }
+    } catch (error) {
+        res.json({
+            message: "Error al borrar",error
+        })
+    }
 })
 
 module.exports = router

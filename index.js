@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyparser = require('body-parser')
+const cors = require('cors')
 require('dotenv').config()
 
 const app = express()
@@ -9,6 +10,13 @@ app.use(bodyparser.urlencoded({
     extended: false
 }))
 app.use(bodyparser.json())
+
+//Configuracion de CORS
+const cosrCaption = {
+    origin: '*',
+    optionSuccessStatus: 200
+}
+app.use(cors(cosrCaption))
 
 //Conexion con la Base de datos 
 const url = `mongodb+srv://Franky:Holamundo@cluster0.udzdwkt.mongodb.net/${process.env.DBNAME}`
